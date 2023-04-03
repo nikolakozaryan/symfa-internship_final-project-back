@@ -1,0 +1,5 @@
+dist/
+src/entities/index.ts
+src/**/*.module.ts
+migrations/
+src/modules/index.ts

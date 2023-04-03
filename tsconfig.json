@@ -5,17 +5,24 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "ignoreDeprecations": "5.0",
+    "importsNotUsedAsValues": "error",
+    "paths": {
+      "@core/*": ["src/core/*"],
+      "@entities/*": ["src/entities/*"],
+      "@models/*": ["src/models/*"],
+      "@shared/*": ["src/shared/*"],
+      "@modules/*": ["src/modules/*"],
+      "@fixtures/*": ["fixtures/*"],
+      "@repositories": ["src/repositories"],
+      "@repositories/*": ["src/repositories/*"]
+    },
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["node_modules", "dist", "migrations"]
 }
