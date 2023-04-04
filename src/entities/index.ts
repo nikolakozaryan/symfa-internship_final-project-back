@@ -1,3 +1,5 @@
-export const ENTITIES = [];
+import { User } from './user.entity';
+
+export const ENTITIES = [User];
 
 export const SUBSCRIBERS = [];
