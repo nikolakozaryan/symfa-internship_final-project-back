@@ -1,6 +1,13 @@
+import type { ValidationPipeOptions } from '@nestjs/common';
+import type { JwtModuleOptions } from '@nestjs/jwt';
+import type { DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
 
 import type { IMap } from '@models/interfaces';
+
+// eslint-disable-next-line no-restricted-imports
+import { INIT_MIGRATIONS, MIGRATIONS } from '../../../migrations';
+import { ENTITIES } from '../../entities';
 
 export class Config {
   private readonly _path: string = 'environments/.env';
@@ -35,5 +42,55 @@ export class Config {
 
   // # Typeorm config
 
+  get ormConfig() {
+    return (type: 'base' | 'init'): DataSourceOptions => {
+      const config: DataSourceOptions = {
+        type: 'postgres',
+        host: this._env.POSTGRES_HOST,
+        port: Number(this._env.POSTGRES_PORT),
+        username: this._env.POSTGRES_USER,
+        password: this._env.POSTGRES_PASSWORD,
+        database: this._env.POSTGRES_DB_NAME,
+        entities: ENTITIES,
+        migrations: MIGRATIONS,
+      };
+
+      const initConfig: DataSourceOptions = {
+        ...config,
+        database: this._env.POSTGRES_INIT_DB_NAME,
+        entities: null,
+        migrations: INIT_MIGRATIONS,
+        migrationsTransactionMode: 'none',
+      };
+
+      if (type === 'base') return config;
+
+      if (type === 'init') return initConfig;
+    };
+  }
+
+  get hashSalt(): number {
+    return Number(this._env.ENCODE_SALT);
+  }
+
   // # JWT
+
+  get AccessTokenOptions(): JwtModuleOptions {
+    return {
+      signOptions: {
+        expiresIn: this._env.JWT_ACCESS_EXPIRES_IN,
+      },
+      secret: this._env.JWT_SECRET,
+    };
+  }
+
+  get RefreshTokenOptions(): JwtModuleOptions {
+    return { signOptions: { expiresIn: this._env.JWT_REFRESH_EXPIRES_IN }, secret: this._env.JWT_REFRESH_SECRET };
+  }
+
+  // # ValidationPipe
+
+  get ValidationOptions(): ValidationPipeOptions {
+    return { whitelist: true, forbidNonWhitelisted: true };
+  }
 }
