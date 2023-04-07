@@ -23,7 +23,9 @@
     "migration:create": "npm run typeorm migration:create",
     "migration:generate": "npm run typeorm migration:generate -- -d ./ormconfig.ts",
     "migration:up": "npm run typeorm migration:run -- -d ./ormconfig.ts",
-    "migration:down": "npm run typeorm migration:revert -- -d ./ormconfig.ts"
+    "migration:down": "npm run typeorm migration:revert -- -d ./ormconfig.ts",
+    "----------------------fixtures --------------------": "",
+    "fixture": "npx fixtures-ts-node-esm load ./fixtures/ -d ./ormconfig.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.3.12",
@@ -49,6 +51,7 @@
     "typeorm": "^0.3.12"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@nestjs/cli": "^9.3.0",
     "@nestjs/schematics": "^9.1.0",
     "@nestjs/testing": "^9.3.12",
@@ -79,6 +82,7 @@
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
+    "typeorm-fixtures-cli": "^3.1.0",
     "typescript": "^5.0.3"
   },
   "env": {

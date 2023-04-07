@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ConflictException } from '@nestjs/common/exceptions';
+import { ConflictException, UnauthorizedException } from '@nestjs/common/exceptions';
 import { ForbiddenException } from '@nestjs/common/exceptions/forbidden.exception';
 import { JwtService } from '@nestjs/jwt';
 
 import type { CreateUserDto } from '@models/dto/user/createUser.dto';
 import type { Token, UserType } from '@models/types';
 import { Config } from '@core/config';
+import { ERROR_MESSAGES } from '@models/constants/errorMessages';
 import { UsersService } from '@shared/user/services';
 
 import * as bcrypt from 'bcrypt';
@@ -25,9 +26,9 @@ export class AuthService {
 
         return userData;
       }
+    } else {
+      throw new UnauthorizedException(ERROR_MESSAGES.EmailNotExists);
     }
-
-    return null;
   }
 
   async login(mail: string): Promise<Token> {
@@ -53,7 +54,7 @@ export class AuthService {
     const user = await this._usersService.findOneByEmail(data.email);
 
     if (user) {
-      throw new ConflictException('User with such email already exists');
+      throw new ConflictException(ERROR_MESSAGES.EmailExists);
     }
 
     const hashedPassword = await this.hashData(data.password);
