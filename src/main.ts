@@ -1,6 +1,7 @@
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 
 import { Config } from '@core/config';
@@ -19,6 +20,16 @@ async function bootstrap(): Promise<void> {
   app.useStaticAssets(join(__dirname, '..', '..', 'public'), {
     prefix: '/public/',
   });
+
+  const config = new DocumentBuilder()
+    .addBearerAuth()
+    .setTitle('Food app')
+    .setDescription('The food app API description')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(Config.get.port);
 }

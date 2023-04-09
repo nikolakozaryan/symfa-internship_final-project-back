@@ -33,4 +33,14 @@ export class UsersService {
 
     return this._usersRepository.save({ ...data, avatar });
   }
+
+  async toggleFav(userId: string, dishId: string): Promise<void> {
+    const user = await this.findOneById(userId);
+
+    const isDishFav = user.favs.includes(dishId);
+
+    const favs = isDishFav ? user.favs.filter((item: string) => item !== dishId) : [...user.favs, dishId];
+
+    await this._usersRepository.save({ ...user, favs });
+  }
 }
