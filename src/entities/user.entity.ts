@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Order } from './order.entity';
 
 @Entity('users')
 export class User {
@@ -31,4 +33,7 @@ export class User {
   @Exclude()
   @Column({ default: null })
   refreshToken: string;
+
+  @OneToMany(() => Order, (order: Order) => order.user)
+  orders: Order[];
 }

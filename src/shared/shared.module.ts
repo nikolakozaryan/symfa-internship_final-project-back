@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Config } from '@core/config';
 import { ENTITIES } from '@entities/index';
 
+import { DishModule } from './dish/dish.module';
 import { UserModule } from './user/user.module';
 
 @Global()
@@ -13,6 +14,7 @@ export class SharedModule {
   static share(): DynamicModule {
     const SharedModules = [
       UserModule,
+      DishModule,
       TypeOrmModule.forRoot(Config.get.ormConfig('base')),
       TypeOrmModule.forFeature(ENTITIES),
       JwtModule.register({}),]

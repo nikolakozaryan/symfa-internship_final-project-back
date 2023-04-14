@@ -19,10 +19,15 @@ export class UserController {
     return this._usersService.findOneById(userId);
   }
 
-  @ApiOkResponse({ description: "Return when dish successfully toggled to user's fav list" })
+  @ApiOkResponse({
+    type: String,
+    description: "Return added to fav dish id when dish successfully toggled to user's fav list",
+  })
   @ApiQuery({ name: 'dishId', type: String, required: true })
   @Patch()
-  async toggleFav(@GetUser('sub') userId: string, @Query('dishId', ParseUUIDPipe) dishId: string): Promise<void> {
+  async toggleFav(@GetUser('sub') userId: string, @Query('dishId', ParseUUIDPipe) dishId: string): Promise<string> {
     await this._usersService.toggleFav(userId, dishId);
+
+    return dishId;
   }
 }

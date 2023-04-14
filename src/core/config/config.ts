@@ -93,4 +93,8 @@ export class Config {
   get ValidationOptions(): ValidationPipeOptions {
     return { whitelist: true, forbidNonWhitelisted: true };
   }
+
+  get StripeKey(): string {
+    return this._env.STRIPE_SECRET_KEY;
+  }
 }
