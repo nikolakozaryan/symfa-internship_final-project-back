@@ -4,6 +4,7 @@ import type { DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
 
 import type { IMap } from '@models/interfaces';
+import type { GoogleClientCredetials } from '@models/types/google.type';
 
 // eslint-disable-next-line no-restricted-imports
 import { INIT_MIGRATIONS, MIGRATIONS } from '../../../migrations';
@@ -96,5 +97,12 @@ export class Config {
 
   get StripeKey(): string {
     return this._env.STRIPE_SECRET_KEY;
+  }
+
+  get GoogleCredentials(): GoogleClientCredetials {
+    return {
+      clientId: this._env.GOOGLE_CLIENT_ID,
+      clientSecret: this._env.GOOGLE_CLIENT_SECRET,
+    };
   }
 }

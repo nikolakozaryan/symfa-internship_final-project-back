@@ -21,14 +21,8 @@ export class Order {
   @ManyToOne(() => User, (user: User) => user.orders, { onDelete: 'CASCADE' })
   user: User;
 
+  @ApiProperty()
   @ManyToMany(() => Dish)
   @JoinTable()
   dishes: Dish[];
-
-  contructor(createdAt: Date, totalPrice: number, dishes: Dish[], user: User): void {
-    this.createdAt = createdAt;
-    this.totalPrice = totalPrice;
-    this.dishes = dishes;
-    this.user = user;
-  }
 }

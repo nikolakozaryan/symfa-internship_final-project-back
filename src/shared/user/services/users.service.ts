@@ -29,7 +29,7 @@ export class UsersService {
   }
 
   async create(data: CreateUserDto): Promise<User> {
-    const avatar = `/public/avatars/${Math.floor(1 + Math.random() * 20)}.png`;
+    const avatar = data.avatar || `/public/avatars/${Math.floor(1 + Math.random() * 20)}.png`;
 
     return this._usersRepository.save({ ...data, avatar });
   }

@@ -62,4 +62,13 @@ export class AuthController {
   async refresh(@GetUser('sub') userId: string, @GetUser('refreshToken') rt: string): Promise<Token> {
     return this._authService.refreshToken(rt, userId);
   }
+
+  @Public()
+  @ApiOkResponse({ type: Token, description: 'Returns when user successfully logged in' })
+  @ApiBadRequestResponse({ description: 'Returns when credentials are not valid' })
+  @ApiConflictResponse({ description: 'Returns when user with such email already exists' })
+  @Post('google')
+  async googleLogin(@Body('token') token: string): Promise<Token> {
+    return this._authService.loginGoogle(token);
+  }
 }

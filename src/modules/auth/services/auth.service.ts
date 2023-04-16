@@ -3,6 +3,7 @@ import { ConflictException, UnauthorizedException } from '@nestjs/common/excepti
 import { ForbiddenException } from '@nestjs/common/exceptions/forbidden.exception';
 import { JwtService } from '@nestjs/jwt';
 
+import type { User } from '@entities/user.entity';
 import type { CreateUserDto } from '@models/dto/user/createUser.dto';
 import type { Token, UserType } from '@models/types';
 import { Config } from '@core/config';
@@ -10,6 +11,7 @@ import { ERROR_MESSAGES } from '@models/constants/errorMessages';
 import { UsersService } from '@shared/user/services';
 
 import * as bcrypt from 'bcrypt';
+import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +42,20 @@ export class AuthService {
     return tokens;
   }
 
+  async loginGoogle(token: string): Promise<Token> {
+    const { clientId, clientSecret } = Config.get.GoogleCredentials;
+    const client = new OAuth2Client(clientId, clientSecret);
+    const ticket = await client.verifyIdToken({ idToken: token });
+    const { name, email, picture } = ticket.getPayload();
+
+    const googleUser = await this.createGoogleUser({ email, username: name, password: '', avatar: picture });
+    const tokens = await this.getTokens({ id: googleUser.id, email, username: name });
+
+    await this.updateUserRt(googleUser.id, tokens.refreshToken);
+
+    return tokens;
+  }
+
   async logout(userId: string): Promise<void> {
     const user = await this._usersService.findOneById(userId);
 
@@ -60,6 +76,16 @@ export class AuthService {
     const hashedPassword = await this.hashData(data.password);
 
     await this._usersService.create({ ...data, password: hashedPassword });
+  }
+
+  async createGoogleUser(data: CreateUserDto): Promise<User> {
+    const user = await this._usersService.findOneByEmail(data.email);
+
+    if (user && user.password) {
+      throw new ConflictException(ERROR_MESSAGES.EmailExists);
+    }
+
+    return user || this._usersService.create(data);
   }
 
   async refreshToken(rt: string, userId: string): Promise<Token> {

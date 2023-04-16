@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { LoginUserDto } from './loginUser.dto';
 
@@ -8,4 +8,9 @@ export class CreateUserDto extends LoginUserDto {
   @IsNotEmpty()
   @IsString()
   username: string;
+
+  @ApiProperty({ required: false, description: 'avatar url', default: 'https://imagehub.com/avatar.png' })
+  @IsOptional()
+  @IsString()
+  avatar?: string;
 }
