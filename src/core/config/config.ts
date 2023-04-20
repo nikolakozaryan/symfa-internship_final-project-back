@@ -105,4 +105,16 @@ export class Config {
       clientSecret: this._env.GOOGLE_CLIENT_SECRET,
     };
   }
+
+  get GatewayConfig(): any {
+    return {
+      cors: {
+        origin: this._env.APP_CLIENT_URL,
+      },
+      connectionStateRecovery: {
+        maxDisconnectionDuration: 2 * 60 * 1000,
+        skipMiddlewares: true,
+      },
+    };
+  }
 }

@@ -27,6 +27,10 @@ export class User {
   favs: string[];
 
   @Exclude()
+  @Column({ default: null })
+  socketId: string;
+
+  @Exclude()
   @Column()
   password: string;
 

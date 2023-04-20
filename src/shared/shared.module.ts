@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Config } from '@core/config';
 import { ENTITIES } from '@entities/index';
 
+import { DeliveryModule } from './delivery/delivery.module';
 import { DishModule } from './dish/dish.module';
 import { UserModule } from './user/user.module';
 
@@ -15,6 +16,7 @@ export class SharedModule {
     const SharedModules = [
       UserModule,
       DishModule,
+      DeliveryModule,
       TypeOrmModule.forRoot(Config.get.ormConfig('base')),
       TypeOrmModule.forFeature(ENTITIES),
       JwtModule.register({}),]

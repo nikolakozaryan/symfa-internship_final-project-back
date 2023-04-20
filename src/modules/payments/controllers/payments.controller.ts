@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
-import { PaymentRequestBody } from '@models/dto/payment/PaymentReqBody.dto';
+import { PaymentRequestBody } from '@models/dto/payment/payment-request-body.dto';
 
 import { PaymentsService } from '../services';
 

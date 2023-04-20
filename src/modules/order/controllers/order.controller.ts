@@ -10,7 +10,7 @@ import {
 
 import { GetUser } from '@core/decorators';
 import { Order } from '@entities/order.entity';
-import { CreateOrderDto } from '@models/dto/order/createOrder.dto';
+import { CreateOrderDto } from '@models/dto/order/create-order.dto';
 
 import { OrderService } from '../services';
 

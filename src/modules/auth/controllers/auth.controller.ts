@@ -4,6 +4,7 @@ import {
   ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -11,8 +12,8 @@ import {
 
 import { GetUser, Public } from '@core/decorators';
 import { LocalAuthGuard, RtAuthGuard } from '@core/guards';
-import { CreateUserDto } from '@models/dto/user/createUser.dto';
-import { LoginUserDto } from '@models/dto/user/loginUser.dto';
+import { CreateUserDto } from '@models/dto/user/create-user.dto';
+import { LoginUserDto } from '@models/dto/user/login-user.dto';
 import { Token } from '@models/types';
 
 import { AuthService } from '../services';
@@ -43,6 +44,15 @@ export class AuthController {
     return this._authService.login(loginUserDto.email);
   }
 
+  @Public()
+  @ApiOkResponse({ type: Token, description: 'Returns when user successfully logged in' })
+  @ApiBadRequestResponse({ description: 'Returns when credentials are not valid' })
+  @ApiConflictResponse({ description: 'Returns when user with such email already exists' })
+  @Post('google')
+  async googleLogin(@Body('token') token: string): Promise<Token> {
+    return this._authService.loginGoogle(token);
+  }
+
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'Returns when user successfully logged out' })
   @ApiUnauthorizedResponse({ description: 'Returns when access token is not valid or expired' })
@@ -64,11 +74,15 @@ export class AuthController {
   }
 
   @Public()
-  @ApiOkResponse({ type: Token, description: 'Returns when user successfully logged in' })
-  @ApiBadRequestResponse({ description: 'Returns when credentials are not valid' })
-  @ApiConflictResponse({ description: 'Returns when user with such email already exists' })
-  @Post('google')
-  async googleLogin(@Body('token') token: string): Promise<Token> {
-    return this._authService.loginGoogle(token);
+  @ApiOkResponse({ description: 'Returns when password successfully updated' })
+  @ApiNotFoundResponse({
+    description: "Returns when user with such email doesn't exist or customer tries to update google account password",
+  })
+  @ApiBadRequestResponse({
+    description: 'Returns when credentials are not valid',
+  })
+  @Patch('forgot')
+  async forgotPassword(@Body() loginUserDto: LoginUserDto): Promise<void> {
+    await this._authService.forgotPassword(loginUserDto);
   }
 }

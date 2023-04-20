@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-import { LoginUserDto } from './loginUser.dto';
+import { LoginUserDto } from './login-user.dto';
 
 export class CreateUserDto extends LoginUserDto {
   @ApiProperty({ description: 'User name', default: 'John Smith' })

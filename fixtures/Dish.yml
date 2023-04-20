@@ -1,4 +1,4 @@
 entity: Dish
-processor: ../processor/DishProcessor
+processor: ../processors/dish
 items:
-  dish{1..50}:
+  dish{1..100}:

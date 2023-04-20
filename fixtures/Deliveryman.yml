@@ -1,0 +1,5 @@
+entity: Deliveryman
+processor: ../processors/deliveryman
+items:
+  deliveryman{1..5}:
+    avatar: 'public/deliveries/($current).png'

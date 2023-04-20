@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { ConflictException, UnauthorizedException } from '@nestjs/common/exceptions';
+import { ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common/exceptions';
 import { ForbiddenException } from '@nestjs/common/exceptions/forbidden.exception';
 import { JwtService } from '@nestjs/jwt';
 
 import type { User } from '@entities/user.entity';
-import type { CreateUserDto } from '@models/dto/user/createUser.dto';
+import type { CreateUserDto } from '@models/dto/user/create-user.dto';
+import type { LoginUserDto } from '@models/dto/user/login-user.dto';
 import type { Token, UserType } from '@models/types';
 import { Config } from '@core/config';
-import { ERROR_MESSAGES } from '@models/constants/errorMessages';
+import { ERROR_MESSAGES } from '@models/constants/errors';
 import { UsersService } from '@shared/user/services';
 
 import * as bcrypt from 'bcrypt';
@@ -63,6 +64,19 @@ export class AuthService {
       await this._usersService.deleteRefreshToken(userId);
     } else {
       throw new ForbiddenException();
+    }
+  }
+
+  async forgotPassword(loginUserDto: LoginUserDto): Promise<void> {
+    const { email, password } = loginUserDto;
+    const user = await this._usersService.findOneByEmail(email);
+
+    if (user && user.password) {
+      const newHashedPassword = await this.hashData(password);
+
+      this._usersService.updatePassword(user.id, newHashedPassword);
+    } else {
+      throw new NotFoundException(ERROR_MESSAGES.EmailNotExists);
     }
   }
 

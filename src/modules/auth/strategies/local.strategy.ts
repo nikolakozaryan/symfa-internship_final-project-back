@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 
 import type { UserType } from '@models/types';
-import { ERROR_MESSAGES } from '@models/constants/errorMessages';
+import { ERROR_MESSAGES } from '@models/constants/errors';
 
 import { AuthService } from '../services';
 

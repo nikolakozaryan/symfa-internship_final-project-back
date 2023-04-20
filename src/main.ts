@@ -6,6 +6,7 @@ import { join } from 'path';
 
 import { Config } from '@core/config';
 import { AtAuthGuard } from '@core/guards';
+import { CustomWsAdapter } from '@shared/delivery/gateways/delivery-gateway.adapter';
 
 import { AppModule } from './app.module';
 
@@ -20,6 +21,8 @@ async function bootstrap(): Promise<void> {
   app.useStaticAssets(join(__dirname, '..', '..', 'public'), {
     prefix: '/public/',
   });
+
+  app.useWebSocketAdapter(new CustomWsAdapter(app));
 
   const config = new DocumentBuilder()
     .addBearerAuth()

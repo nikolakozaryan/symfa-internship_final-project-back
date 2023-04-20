@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, ILike, In, Repository } from 'typeorm';
 
-import type { ResponseDishesDto } from '@models/dto/dish/responseDishes.dto';
+import type { ResponseDishesDto } from '@models/dto/dish/response-dishes.dto';
 import type { DishType, TasteType } from '@models/types/dish';
 import { Dish } from '@entities/dish.entity';
 import { DISHES_PER_PAGE } from '@models/constants/pagination';

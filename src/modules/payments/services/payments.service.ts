@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import type { Dish } from '@entities/dish.entity';
-import type { PaymentRequestBody } from '@models/dto/payment/PaymentReqBody.dto';
+import type { PaymentRequestBody } from '@models/dto/payment/payment-request-body.dto';
 import { Config } from '@core/config';
 import { DishService } from '@shared/dish/services';
 

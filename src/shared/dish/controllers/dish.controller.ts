@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiTags, ApiUnauthorizedRespons
 
 import type { DishType, TasteType } from '@models/types/dish';
 import { GetUser } from '@core/decorators';
-import { ResponseDishesDto } from '@models/dto/dish/responseDishes.dto';
+import { ResponseDishesDto } from '@models/dto/dish/response-dishes.dto';
 
 import { DishService } from '../services';
 
