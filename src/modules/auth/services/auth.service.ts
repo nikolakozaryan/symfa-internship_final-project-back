@@ -63,7 +63,7 @@ export class AuthService {
     if (user && user.refreshToken) {
       await this._usersService.deleteRefreshToken(userId);
     } else {
-      throw new ForbiddenException();
+      throw new ForbiddenException(ERROR_MESSAGES.InvalidAT);
     }
   }
 
@@ -117,7 +117,7 @@ export class AuthService {
       }
     }
 
-    throw new ForbiddenException();
+    throw new ForbiddenException(ERROR_MESSAGES.InvalidRT);
   }
 
   async updateUserRt(userId: string, rt: string): Promise<void> {

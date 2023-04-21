@@ -25,4 +25,10 @@ export class Order {
   @ManyToMany(() => Dish)
   @JoinTable()
   dishes: Dish[];
+
+  constructor(user: User, dishes: Dish[], totalPrice: number) {
+    this.user = user;
+    this.dishes = dishes;
+    this.totalPrice = totalPrice;
+  }
 }

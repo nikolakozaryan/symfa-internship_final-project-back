@@ -4,7 +4,7 @@ import type { DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
 
 import type { IMap } from '@models/interfaces';
-import type { GoogleClientCredetials } from '@models/types/google.type';
+import type { GoogleClientCredetials } from '@models/types';
 
 // eslint-disable-next-line no-restricted-imports
 import { INIT_MIGRATIONS, MIGRATIONS } from '../../../migrations';

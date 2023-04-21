@@ -1,7 +1,7 @@
 import { OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 
 import type { Delivery } from '@entities/delivery.entity';
-import type { SocketWithUserID } from '@models/types/socket.type';
+import type { SocketWithUserID } from '@models/types';
 import { Config } from '@core/config';
 import { SOCKET_EVENTS } from '@models/enums/socket-events';
 import { UsersService } from '@shared/user/services';

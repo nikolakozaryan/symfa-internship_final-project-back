@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
-import type { DishType, TasteType } from '@models/types/dish';
+import type { DishType, TasteType } from '@models/types';
 import { GetUser } from '@core/decorators';
 import { ResponseDishesDto } from '@models/dto/dish/response-dishes.dto';
 

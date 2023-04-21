@@ -3,8 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import type { CreateOrderDto } from '@models/dto/order/create-order.dto';
-import { getDeliveryTime } from '@core/helpers/get-delivery-time';
-import { getMaxCookingTime } from '@core/helpers/get-max-cooking-time';
+import { getDeliveryDate } from '@core/helpers/get-delivery-date';
 import { Delivery } from '@entities/delivery.entity';
 import { Order } from '@entities/order.entity';
 import { DeliveryGateway } from '@shared/delivery/gateways/delivery.gateway';
@@ -26,25 +25,18 @@ export class OrderService {
   ) {}
 
   async createOrder(userId: string, createOrderDto: CreateOrderDto): Promise<void> {
-    const { createdAt, totalPrice, dishIds } = createOrderDto;
+    const { totalPrice, dishIds } = createOrderDto;
     const dishes = await this._dishService.getDishesByIds(dishIds);
     const user = await this._userService.findOneById(userId);
-    const order = new Order();
-
-    order.user = user;
-    order.dishes = dishes;
-    order.totalPrice = totalPrice;
-    order.createdAt = new Date(createdAt);
+    const order = new Order(user, dishes, totalPrice);
 
     await this._orderRepository.save(order);
 
-    const newDelivery = new Delivery();
+    const destination = faker.address.cityName();
+    const deliveryman = await this._deliveryService.getRandomDeliveryman();
+    const deliveryDate = getDeliveryDate(order);
 
-    newDelivery.destination = faker.address.cityName();
-    newDelivery.deliveryman = await this._deliveryService.getRandomDeliveryman();
-    newDelivery.user = user;
-    newDelivery.deliveryDate = new Date(Date.now() + (getDeliveryTime() + getMaxCookingTime(order)) * 60 * 1000);
-
+    const newDelivery = new Delivery(user, deliveryman, deliveryDate, destination);
     const delivery = await this._deliveryRepository.save(newDelivery);
 
     this._deliveryGateway.sendDelivery(delivery);

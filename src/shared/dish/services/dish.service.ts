@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, ILike, In, Repository } from 'typeorm';
 
 import type { ResponseDishesDto } from '@models/dto/dish/response-dishes.dto';
-import type { DishType, TasteType } from '@models/types/dish';
+import type { DishType, TasteType } from '@models/types';
 import { Dish } from '@entities/dish.entity';
 import { DISHES_PER_PAGE } from '@models/constants/pagination';
 import { UsersService } from '@shared/user/services';
@@ -20,8 +20,10 @@ export class DishService {
     dishType?: DishType | TasteType,
   ): Promise<ResponseDishesDto> {
     const user = await this._userService.findOneById(userId);
+
     const favFilter: FindOptionsWhere<Dish> = fav ? { id: In(user.favs), taste: dishType } : null;
     const dishTypeFilter: FindOptionsWhere<Dish> = dishType ? { type: dishType } : null;
+
     const filter = favFilter || dishTypeFilter;
 
     const [dishes, amount] = await this._dishRepository.findAndCount({

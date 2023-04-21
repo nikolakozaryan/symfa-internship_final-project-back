@@ -2,7 +2,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { JwtService } from '@nestjs/jwt';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 
-import type { SocketWithUserID } from '@models/types/socket.type';
+import type { SocketWithUserID } from '@models/types';
 import { Config } from '@core/config';
 
 import type { Server } from 'socket.io';

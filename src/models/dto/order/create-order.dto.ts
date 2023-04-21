@@ -6,7 +6,4 @@ export class CreateOrderDto {
 
   @ApiProperty()
   totalPrice: number;
-
-  @ApiProperty()
-  createdAt: number;
 }

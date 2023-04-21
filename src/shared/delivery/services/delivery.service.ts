@@ -13,13 +13,6 @@ export class DeliveryService {
     @InjectRepository(Delivery) private _deliveryRepository: Repository<Delivery>,
   ) {}
 
-  async getRandomDeliveryman(): Promise<Deliveryman> {
-    const deliverimen = await this._deliverymanRepository.find();
-    const randomIndex = getRandomNumber(deliverimen.length - 1);
-
-    return deliverimen[randomIndex];
-  }
-
   async getDeliveries(userId: string): Promise<Delivery[]> {
     return this._deliveryRepository.find({
       relations: { deliveryman: true },
@@ -34,5 +27,12 @@ export class DeliveryService {
         deliveryDate: 'asc',
       },
     });
+  }
+
+  async getRandomDeliveryman(): Promise<Deliveryman> {
+    const deliverimen = await this._deliverymanRepository.find();
+    const randomIndex = getRandomNumber(deliverimen.length - 1);
+
+    return deliverimen[randomIndex];
   }
 }

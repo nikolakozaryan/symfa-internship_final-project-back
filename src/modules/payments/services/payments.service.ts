@@ -1,8 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import type { Dish } from '@entities/dish.entity';
 import type { PaymentRequestBody } from '@models/dto/payment/payment-request-body.dto';
 import { Config } from '@core/config';
+import { ERROR_MESSAGES } from '@models/constants/errors';
 import { DishService } from '@shared/dish/services';
 
 import Stripe from 'stripe';
@@ -16,8 +17,6 @@ export class PaymentsService {
 
   async createPayment(paymentRequestBody: PaymentRequestBody[]): Promise<string> {
     const dishIds = paymentRequestBody.map((item: PaymentRequestBody) => item.id);
-
-    await this._dishService.getDishesByIds(dishIds);
     const dishes = await this._dishService.getDishesByIds(dishIds);
     const sumAmount = paymentRequestBody.reduce((acc: number, item: PaymentRequestBody) => {
       const dish = dishes.find((dishItem: Dish) => dishItem.id === item.id);
@@ -33,7 +32,7 @@ export class PaymentsService {
 
       return paymentIntents.client_secret;
     } catch {
-      throw new BadRequestException();
+      throw new InternalServerErrorException(ERROR_MESSAGES.StripeError);
     }
   }
 }

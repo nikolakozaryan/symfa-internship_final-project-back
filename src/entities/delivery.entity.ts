@@ -27,4 +27,11 @@ export class Delivery {
   @ApiProperty()
   @Column()
   destination: string;
+
+  constructor(user: User, deliveryman: Deliveryman, deliveryDate: Date, destination: string) {
+    this.user = user;
+    this.deliveryman = deliveryman;
+    this.deliveryDate = deliveryDate;
+    this.destination = destination;
+  }
 }
