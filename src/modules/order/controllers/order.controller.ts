@@ -30,7 +30,7 @@ export class OrderController {
   @ApiBadRequestResponse({ description: 'Returns when credentials are not valid' })
   @ApiBody({ type: CreateOrderDto })
   @Post()
-  async createOrder(@GetUser('sub') userId: string, @Body() createOrderDto: any): Promise<void> {
+  async createOrder(@GetUser('sub') userId: string, @Body() createOrderDto: CreateOrderDto): Promise<void> {
     await this._orderService.createOrder(userId, createOrderDto as CreateOrderDto);
   }
 }
